@@ -3,7 +3,7 @@ An data collection and visualization web app for Twitter
 
 
 If you want to view the live application, below is the link
-
+https://share.streamlit.io/ravineesh/tweetdata/main/fetch_tweets.py
 
 # Installation instruction for Local
 After cloning this repository.
