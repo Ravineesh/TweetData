@@ -13,11 +13,11 @@ st.set_page_config(layout='wide', page_title='TweetData')
 st.title('Twitter Data')
 
 # hide the sidebar
-# st.markdown(""" <style>
-#                 #MainMenu {visibility: hidden;}
-#                 footer {visibility: hidden;}
-#                 </style> """,
-#             unsafe_allow_html=True)
+st.markdown(""" <style>
+                #MainMenu {visibility: hidden;}
+                footer {visibility: hidden;}
+                </style> """,
+            unsafe_allow_html=True)
 
 # about section
 with st.expander('About this app'):
