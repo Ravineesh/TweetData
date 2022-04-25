@@ -3,6 +3,7 @@ import streamlit as st
 import config
 import tweepy
 import util
+import os
 
 # Creating an OAuthHandler instance.
 auth = tweepy.OAuthHandler(os.environ["API_KEY"], os.environ["API_SECRET_KEY"])
