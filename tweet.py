@@ -6,9 +6,9 @@ import util
 import os
 
 # Creating an OAuthHandler instance.
-auth = tweepy.OAuthHandler(os.environ["API_KEY"], os.environ["API_SECRET_KEY"])
+auth = tweepy.OAuthHandler(st.secrets["API_KEY"], st.secrets["API_SECRET_KEY"])
 # Setting the access token provided by the Twitter
-auth.set_access_token(os.environ["ACCESS_TOKEN"], os.environ["ACCESS_TOKEN_SECRET"])
+auth.set_access_token(st.secrets["ACCESS_TOKEN"], st.secrets["ACCESS_TOKEN_SECRET"])
 
 # The API class is used to provide access to entire twitter RESTFul API methods
 api = tweepy.API(auth)
