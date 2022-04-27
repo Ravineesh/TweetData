@@ -3,13 +3,18 @@ import config
 import tweet
 import pandas as pd
 import plotly.express as px
-
+from streamlit_lottie import st_lottie
 from numerize import numerize
-
-# set the layout and title of app
 import util
 
+# set the layout of the app
 st.set_page_config(layout='wide', page_title='TweetData')
+
+# load animation
+load_animation = util.load_lottieurl(config.lottie_animation_url)
+st_lottie(load_animation, height=200)
+
+# set the title of the app
 st.title('Twitter Data')
 
 # hide the sidebar
@@ -21,8 +26,7 @@ st.markdown(""" <style>
 
 # about section
 with st.expander('About this app'):
-    st.write('This app shows is used to collect the tweets of Twitter users by using Twitter API.')
-    st.image('https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-logo-vector-png-clipart-1.png', width=100)
+    st.write('This is a data collection app which allows to collect the tweets of Twitter users by using Twitter API.')
 
 # streamlit form
 st.subheader('Please enter the below details..')

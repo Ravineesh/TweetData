@@ -10,6 +10,8 @@ like_count = []
 hashtag = []
 user_mention = []
 
+lottie_animation_url = 'https://assets5.lottiefiles.com/private_files/lf30_oahjps8u.json'
+
 # Twitter Columns
 tweet_columns = ['user_id', 'user_name', 'user_screen_name', 'tweet_text',
                  'tweet_creation_date', 'language', 'retweets_count', 'like_count',

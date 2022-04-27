@@ -2,6 +2,7 @@ from datetime import datetime
 import pandas as pd
 
 
+
 def extract_hash_tags(hash_tag_entries):
     """Return the list of hashtags if present in a tweet.
 
@@ -83,3 +84,12 @@ def tweets_per_month(df):
     month_wise_tweets['Month'] = month_wise_tweets['Month'].astype(dtype=str)
 
     return month_wise_tweets
+
+
+def load_lottieurl(url: str):
+    """Load the animation."""
+    
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
