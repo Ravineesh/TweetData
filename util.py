@@ -3,7 +3,6 @@ import pandas as pd
 import requests
 
 
-
 def extract_hash_tags(hash_tag_entries):
     """Return the list of hashtags if present in a tweet.
 
@@ -15,8 +14,7 @@ def extract_hash_tags(hash_tag_entries):
     hashtag = ""
     if len(hash_tag_entries) > 0:
         for entry in range(0, len(hash_tag_entries)):
-            hashtag = hashtag + hash_tag_entries[entry]['text'] + ','
-        hash_tag_list.append(hashtag)
+            hash_tag_list.append(hash_tag_entries[entry]['text'])
     else:
         hash_tag_list.append("#none")
 
@@ -33,8 +31,7 @@ def extract_user_mention(user_mention_entries):
     user_mention = ""
     if len(user_mention_entries) > 0:
         for entry in range(0, len(user_mention_entries)):
-            user_mention = user_mention + user_mention_entries[entry]['screen_name'] + ','
-        user_mention_list.append(user_mention)
+            user_mention_list.append(user_mention_entries[entry]['screen_name'])
     else:
         user_mention_list.append("#none")
 
@@ -87,9 +84,58 @@ def tweets_per_month(df):
     return month_wise_tweets
 
 
+def get_top_10_hashtags(df):
+    """"Returns the top 10 user mentions from user tweets
+
+    :param df: dataframe of hashtags
+    """
+    hashtag_list = []
+    for index, row in df.iterrows():
+        hashtag = row['hashtag']
+        if '#none' not in hashtag:
+            if len(hashtag) > 0:
+                for item in hashtag:
+                    hashtag_list.append(item.strip())
+            else:
+                hashtag_list.append(hashtag[0].strip)
+
+    hash_tag_df = pd.DataFrame(hashtag_list, columns=['hashtag'])
+    hash_tag_count = hash_tag_df.hashtag.value_counts()
+    hash_tag_count = hash_tag_count.to_frame()
+    hash_tag_count['hash_tag'] = hash_tag_count.index
+    hash_tag_count.columns = ['count', 'hash_tag']
+
+    return hash_tag_count
+
+
+def get_user_mentions(df):
+    """"Returns the top 10 user mentions from user tweets
+
+    :param df: dataframe of hashtags
+    """
+    user_mentions_list = []
+    for index, row in df.iterrows():
+        user_mention = row['user_mention']
+        if '#none' not in user_mention:
+            if len(user_mention) > 0:
+                for user in user_mention:
+                    user_mentions_list.append(user.strip())
+            else:
+                user_mentions_list.append(user_mention[0].strip)
+
+    user_mention_df = pd.DataFrame(user_mentions_list, columns=['user'])
+    user_mention_count = user_mention_df.user.value_counts()
+    user_mention_count = user_mention_count.to_frame()
+    user_mention_count.to_csv('testing.csv')
+    user_mention_count['user_mention'] = user_mention_count.index
+    user_mention_count.columns = ['count', 'user_mention']
+
+    return user_mention_count
+
+
 def load_lottieurl(url: str):
     """Load the animation."""
-    
+
     r = requests.get(url)
     if r.status_code != 200:
         return None

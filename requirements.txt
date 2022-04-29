@@ -1,7 +1,10 @@
-numerize==0.12
 pandas==1.3.5
+demoji==1.1.0
+numerize==0.12
 plotly==5.7.0
-streamlit==1.8.1
-tweepy==4.8.0
-streamlit_lottie==0.0.3
 requests==2.27.1
+spacy==3.3.0
+streamlit==1.8.1
+streamlit_lottie==0.0.3
+textblob==0.17.1
+tweepy==4.8.0

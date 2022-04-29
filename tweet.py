@@ -3,7 +3,7 @@ import streamlit as st
 import config
 import tweepy
 import util
-import os
+import time
 
 # Creating an OAuthHandler instance.
 auth = tweepy.OAuthHandler(st.secrets["API_KEY"], st.secrets["API_KEY_SECRET"])
@@ -32,7 +32,6 @@ def fetch_tweets(twitter_handle, tweet_limit, from_date, to_date):
         creation_date = util.get_date_time(tweet.created_at)
         if (creation_date > start_date) & (creation_date < end_date):
             config.user_name.append(tweet.user.name)
-            config.user_id.append(tweet.user.id_str)
             config.user_screen_name.append(tweet.user.screen_name)
             config.source.append(tweet._json["source"])
             config.language.append(tweet._json["lang"])
@@ -47,7 +46,7 @@ def fetch_tweets(twitter_handle, tweet_limit, from_date, to_date):
             # If tweet contains user_mentions
             config.user_mention.append(util.extract_user_mention(tweet._json["entities"]["user_mentions"]))
 
-    df = pd.DataFrame(zip(config.user_id, config.user_name, config.user_screen_name, config.tweet_text,
+    df = pd.DataFrame(zip(config.user_name, config.user_screen_name, config.tweet_text,
                           config.tweet_creation_date, config.language, config.retweets_count,
                           config.like_count, config.hashtag, config.user_mention, config.source)
                       , columns=config.tweet_columns)
@@ -81,6 +80,53 @@ def user_details(twitter_handle):
 
     return pd.DataFrame(zip(user_name, user_location, is_verified, followers_count, friends_count, tweet_count,
                             joining_date), columns=config.user_details_columns)
+
+
+def get_followers(twitter_handle):
+    """Get a list of all followers of a twitter account.
+
+    :param twitter_handle: twitter username without '@' symbol
+    :return: list of followers dataframe
+    """
+    followers_json_data = []
+
+    for page in tweepy.Cursor(api.get_followers, screen_name=twitter_handle, wait_on_rate_limit=True,
+                              count=100).pages():
+        try:
+            followers_json_data.extend(page)
+        except tweepy.TweepError as e:
+            print("Going to sleep:", e)
+            time.sleep(2)
+
+    return followers_json_data
+
+
+def get_follower_data(followers_json_data):
+    follower_name = []
+    follower_screen_name = []
+    follower_location = []
+    follower_description = []
+    follower_followers_count = []
+    follower_friends_count = []
+    follower_tweets_count = []
+    follower_created_at = []
+    follower_account_status = []
+
+    for follower in followers_json_data:
+        follower_name.append(follower._json['name'])
+        follower_screen_name.append(follower._json['screen_name'])
+        follower_location.append(follower._json['location'])
+        follower_description.append(follower._json['description'])
+        follower_followers_count.append(follower._json['followers_count'])
+        follower_friends_count.append(follower._json['friends_count'])
+        follower_created_at.append(follower._json['created_at'])
+        follower_tweets_count.append(follower._json['statuses_count'])
+        follower_account_status.append(follower._json['verified'])
+
+    return pd.DataFrame(zip(follower_name, follower_screen_name, follower_location, follower_description,
+                            follower_followers_count, follower_friends_count, follower_tweets_count,
+                            follower_created_at, follower_account_status),
+                        columns=config.follower_columns)
 
 
 @st.cache
